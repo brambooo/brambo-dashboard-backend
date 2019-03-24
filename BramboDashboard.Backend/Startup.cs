@@ -2,8 +2,10 @@
 using System.Threading;
 using BramboDashboard.Backend.API.Configurations;
 using BramboDashboard.Backend.API.Services;
+using BramboDashboard.Backend.API.Services.Contracts;
 using BramboDashboard.Backend.DAL;
 using BramboDashboard.Backend.DAL.Repository;
+using BramboDashboard.Backend.DAL.Repository.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -36,12 +38,18 @@ namespace BramboDashboard.Backend.API
       services.AddDbContext<SportschoolVanDrunenDbContext>(options => options.UseSqlServer(connectionString));
 
       services.AddTransient(x => AutoMapperConfig.GetConfiguration().CreateMapper());
+      // DI -Repositories
+
       services.AddTransient<IClientRepository, ClientRepository>();
+      services.AddTransient<IWeightRepository, WeightRepository>();
+
+      // DI - Services
       services.AddTransient<IClientService, ClientService>();
+      services.AddTransient<IWeightService, WeightService>();
 
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new Info {Title = "Brambo Dashboard APi", Version = "v1"});
+        c.SwaggerDoc("v1", new Info {Title = "Brambo Dashboard API", Version = "v1"});
       });
 
       services.AddMvc();
@@ -57,7 +65,7 @@ namespace BramboDashboard.Backend.API
 
       using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
       {
-        Console.WriteLine("################# DB AANMAKEN");
+        Console.WriteLine("################# Create Database");
         EnsureCreated(serviceScope); // Methode die wacht met aanmaken omdat we een vertraging kunnen hebben
         serviceScope.ServiceProvider.GetService<SportschoolVanDrunenDbContext>().Database
           .EnsureCreated(); // DB "aanmaken"
@@ -98,7 +106,7 @@ namespace BramboDashboard.Backend.API
           }
         }
 
-        Console.WriteLine($"Wait 6 seconds for next attempt...");
+        Console.WriteLine("Wait 6 seconds for next attempt...");
         Thread.Sleep(6000);
       }
     }

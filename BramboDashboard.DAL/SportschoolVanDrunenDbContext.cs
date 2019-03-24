@@ -11,5 +11,6 @@ namespace BramboDashboard.Backend.DAL
 
     public DbSet<CoachEntity> CoachEntities { get; set; }
     public DbSet<ClientEntity> ClientEntities { get; set; }
+    public DbSet<WeightEntity> WeightEntities { get; set; }
   }
 }

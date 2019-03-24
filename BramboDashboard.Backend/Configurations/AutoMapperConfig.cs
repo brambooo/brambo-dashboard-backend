@@ -11,8 +11,8 @@ namespace BramboDashboard.Backend.API.Configurations
         return new MapperConfiguration(cfg =>
         {
           cfg.CreateMap<Coach, CoachEntity>();
-          cfg.CreateMap<AddUserViewModel, ClientEntity>();
-          cfg.CreateMap<ClientEntity, GetUserViewModel>();
+          cfg.CreateMap<Client, ClientEntity>().ReverseMap();
+          cfg.CreateMap<Weight, WeightEntity>().ReverseMap();
         });
       }
     }

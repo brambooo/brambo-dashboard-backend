@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BramboDashboard.Backend.API.Exceptions;
 using BramboDashboard.Backend.API.Models;
 using BramboDashboard.Backend.API.Services;
+using BramboDashboard.Backend.API.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BramboDashboard.Backend.API.Controllers
@@ -18,7 +19,7 @@ namespace BramboDashboard.Backend.API.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] AddUserViewModel model)
+    public async Task<IActionResult> Post([FromBody] Client client)
     {
       // Validate
       if (!ModelState.IsValid)
@@ -26,7 +27,7 @@ namespace BramboDashboard.Backend.API.Controllers
         return BadRequest("Required fields are empty.");
       }
 
-      await _clientService.Add(model);
+      await _clientService.AddAsync(client);
       return Ok();
     }
 
@@ -40,35 +41,13 @@ namespace BramboDashboard.Backend.API.Controllers
       }
       try
       {
-        var user = await _clientService.Get(id);
+        var user = await _clientService.GetAsync(id);
         return Ok(user);
       }
       catch (Exception e)
       {
         return BadRequest(e is UserNotFoundException ? "User with given ID cannot be found." : "Something went wrong.");
       }
-    }
-
-    [HttpGet]
-    [Route("Users/{id}/Weights/{weight}/")]
-    public async Task<IActionResult> UserRegisterWeight(int id, decimal weight)
-    {
-      // Validate
-      if (!ModelState.IsValid)
-      {
-        return BadRequest("Required fields are empty.");
-      }
-
-      try
-      {
-        await _clientService.RegisterWeight(id, weight);
-      }
-      catch (Exception e)
-      {
-        // TODO: Log exception
-        return BadRequest(e is UserNotFoundException ? "User with given ID cannot be found." : "Something went wrong.");
-      }
-      return Ok();
     }
   }
 }

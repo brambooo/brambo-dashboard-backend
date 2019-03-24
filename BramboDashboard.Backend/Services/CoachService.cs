@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BramboDashboard.Backend.API.Models;
+using BramboDashboard.Backend.API.Services.Contracts;
 using BramboDashboard.Backend.DAL.Entities;
 
 namespace BramboDashboard.Backend.API.Services

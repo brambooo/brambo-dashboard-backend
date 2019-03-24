@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BramboDashboard.Backend.DAL.Entities;
+using BramboDashboard.Backend.DAL.Repository.Contracts;
 
 namespace BramboDashboard.Backend.DAL.Repository
 {

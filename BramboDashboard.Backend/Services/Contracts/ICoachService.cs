@@ -1,6 +1,6 @@
 ﻿using BramboDashboard.Backend.API.Models;
 
-namespace BramboDashboard.Backend.API.Services
+namespace BramboDashboard.Backend.API.Services.Contracts
 {
   public interface ICoachService
   {
