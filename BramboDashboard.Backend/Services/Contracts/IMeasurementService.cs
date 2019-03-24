@@ -6,7 +6,7 @@ using BramboDashboard.Backend.API.Models;
 
 namespace BramboDashboard.Backend.API.Services.Contracts
 {
-    public interface IWeightService
+    public interface IMeasurementService
     {
       Task RegisterWeight(int clientId, Weight weight);
       Task<IList<Weight>> GetWeights(int clientId);

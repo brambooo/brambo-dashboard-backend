@@ -45,13 +45,14 @@ namespace BramboDashboard.Backend.API
 
       // DI - Services
       services.AddTransient<IClientService, ClientService>();
-      services.AddTransient<IWeightService, WeightService>();
+      services.AddTransient<IMeasurementService, MeasurementService>();
 
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Info {Title = "Brambo Dashboard API", Version = "v1"});
       });
 
+      services.AddCors();
       services.AddMvc();
     }
 
@@ -78,6 +79,10 @@ namespace BramboDashboard.Backend.API
       // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
       // specifying the Swagger JSON endpoint.
       app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
+
+      app.UseCors(
+        options => options.WithOrigins("http://localhost:4200").AllowAnyMethod()
+      );
 
       app.UseMvc();
     }

@@ -8,12 +8,12 @@ using BramboDashboard.Backend.DAL.Repository.Contracts;
 
 namespace BramboDashboard.Backend.API.Services
 {
-  public class WeightService : IWeightService
+  public class MeasurementService : IMeasurementService
     {
       private readonly IWeightRepository _weightRepository;
       private readonly IMapper _mapper;
 
-      public WeightService(IWeightRepository weightRepository, IMapper mapper)
+      public MeasurementService(IWeightRepository weightRepository, IMapper mapper)
       {
         _weightRepository = weightRepository;
         _mapper = mapper;

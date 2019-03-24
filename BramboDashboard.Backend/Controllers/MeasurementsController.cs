@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace BramboDashboard.Backend.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/weights")]
-    public class WeightController : Controller
+    [Route("api/measurements")]
+    public class MeasurementsController : Controller
     {
-      private readonly IWeightService _weightService;
+      private readonly IMeasurementService _weightService;
 
-      public WeightController(IWeightService weightService)
+      public MeasurementsController(IMeasurementService weightService)
       {
         _weightService = weightService;
       }
@@ -27,7 +27,7 @@ namespace BramboDashboard.Backend.API.Controllers
           return NotFound();
         }
 
-        return Ok();
+        return Ok(weights);
       }
 
       [HttpPost]
