@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
 using BramboDashboard.Backend.DAL.Entities;
 using BramboDashboard.Backend.DAL.Repository.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace BramboDashboard.Backend.DAL.Repository
 {
   public class ClientRepository : IClientRepository
   {
-    private readonly SportschoolVanDrunenDbContext _context;
+    private readonly BramboDashboardDbContext _context;
 
-    public ClientRepository(SportschoolVanDrunenDbContext context)
+    public ClientRepository(BramboDashboardDbContext context)
     {
       _context = context;
     }
@@ -19,15 +20,15 @@ namespace BramboDashboard.Backend.DAL.Repository
       await _context.SaveChangesAsync();
     }
 
-    public async Task<ClientEntity> GetAsync(int userId)
+    public Task<ClientEntity> GetAsync(int userId)
     {
-      return await _context.FindAsync<ClientEntity>(userId);
-     }
+      return _context.ClientEntities.Include(client => client.WeightMeasurements).FirstOrDefaultAsync(client => client.Id == userId);
+    }
 
-    public async Task Update(ClientEntity user)
+    public Task Update(ClientEntity user)
     {
       _context.ClientEntities.Update(user);
-      await _context.SaveChangesAsync();
+      return _context.SaveChangesAsync();
     }
   }
 }

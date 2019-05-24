@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BramboDashboard.Backend.API.Models;
@@ -10,26 +11,38 @@ namespace BramboDashboard.Backend.API.Services
 {
   public class MeasurementService : IMeasurementService
     {
-      private readonly IWeightRepository _weightRepository;
+      private readonly IMeasurementRepository _measurementRepository;
       private readonly IMapper _mapper;
 
-      public MeasurementService(IWeightRepository weightRepository, IMapper mapper)
+      public MeasurementService(IMeasurementRepository measurementRepository, IMapper mapper)
       {
-        _weightRepository = weightRepository;
+        _measurementRepository = measurementRepository;
         _mapper = mapper;
       }
 
-      public async Task RegisterWeight(int clientId, Weight weight)
+      public async Task RegisterMeasurementAsync(int clientId, RegisterMeasurement measurement)
       {
-        var weightEntity = _mapper.Map<WeightEntity>(weight);
-        await _weightRepository.AddAsync(clientId, weightEntity);
+        var measurementEntity = _mapper.Map<MeasurementEntity>(measurement);
+        await _measurementRepository.AddAsync(clientId, measurementEntity);
       }
 
-      public async Task<IList<Weight>> GetWeights(int clientId)
+      public async Task<IList<GetMeasurement>> GetMeasurementsAsync(int clientId)
       {
-        var weightEntities = await _weightRepository.GetAllAsync(clientId);
-        return _mapper.Map<IList<Weight>>(weightEntities);
+        var measurementEntities = await _measurementRepository.GetAllAsync(clientId);
+        return _mapper.Map<IList<GetMeasurement>>(measurementEntities);
       }
+
+    public async Task<GetMeasurement> GetMeasurementForDateAsync(int clientId, DateTime date)
+    {
+      var measurementEntity = await _measurementRepository.GetForDateAsync(clientId, date);
+      return _mapper.Map<GetMeasurement>(measurementEntity);
     }
+
+    public async Task<IList<GetMeasurement>> GetMeasurementForPeriodAsync(int clientId, DateTime startDate, DateTime endDate)
+    {
+      var measurementEntities= await _measurementRepository.GetForPeriodAsync(clientId, startDate, endDate);
+      return _mapper.Map<IList<GetMeasurement>>(measurementEntities);
+    }
+  }
 
 }

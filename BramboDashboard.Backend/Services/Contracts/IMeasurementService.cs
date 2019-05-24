@@ -8,7 +8,10 @@ namespace BramboDashboard.Backend.API.Services.Contracts
 {
     public interface IMeasurementService
     {
-      Task RegisterWeight(int clientId, Weight weight);
-      Task<IList<Weight>> GetWeights(int clientId);
+      Task RegisterMeasurementAsync(int clientId, RegisterMeasurement measurement);
+      Task<IList<GetMeasurement>> GetMeasurementsAsync(int clientId);
+      Task<GetMeasurement> GetMeasurementForDateAsync(int clientId, DateTime date);
+      Task<IList<GetMeasurement>> GetMeasurementForPeriodAsync(int clientId, DateTime startDate, DateTime endDate);
+
   }
 }

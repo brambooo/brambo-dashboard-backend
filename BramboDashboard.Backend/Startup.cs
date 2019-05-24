@@ -35,13 +35,13 @@ namespace BramboDashboard.Backend.API
 
       Console.WriteLine("################### Connection string ###################");
       Console.WriteLine($"connectionString = {connectionString}");
-      services.AddDbContext<SportschoolVanDrunenDbContext>(options => options.UseSqlServer(connectionString));
+      services.AddDbContext<BramboDashboardDbContext>(options => options.UseSqlServer(connectionString));
 
       services.AddTransient(x => AutoMapperConfig.GetConfiguration().CreateMapper());
       // DI -Repositories
 
       services.AddTransient<IClientRepository, ClientRepository>();
-      services.AddTransient<IWeightRepository, WeightRepository>();
+      services.AddTransient<IMeasurementRepository, MeasurementRepository>();
 
       // DI - Services
       services.AddTransient<IClientService, ClientService>();
@@ -68,7 +68,7 @@ namespace BramboDashboard.Backend.API
       {
         Console.WriteLine("################# Create Database");
         EnsureCreated(serviceScope); // Methode die wacht met aanmaken omdat we een vertraging kunnen hebben
-        serviceScope.ServiceProvider.GetService<SportschoolVanDrunenDbContext>().Database
+        serviceScope.ServiceProvider.GetService<BramboDashboardDbContext>().Database
           .EnsureCreated(); // DB "aanmaken"
 //        serviceScope.ServiceProvider.GetService<SportschoolVanDrunenDbContext>().EnsureSeeded();            // DB "seeden"
       }
@@ -80,9 +80,12 @@ namespace BramboDashboard.Backend.API
       // specifying the Swagger JSON endpoint.
       app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
-      app.UseCors(
-        options => options.WithOrigins("http://localhost:4200").AllowAnyMethod()
-      );
+      app.UseCors(cors =>
+      {
+        cors.AllowAnyHeader();
+        cors.AllowAnyOrigin();
+        cors.AllowAnyMethod();
+      });
 
       app.UseMvc();
     }
@@ -98,7 +101,7 @@ namespace BramboDashboard.Backend.API
         try
         {
           Console.WriteLine($"Attempt ({i}/5) to ensure database has been created...");
-          serviceScope.ServiceProvider.GetService<SportschoolVanDrunenDbContext>().Database
+          serviceScope.ServiceProvider.GetService<BramboDashboardDbContext>().Database
             .EnsureCreated();
           break;
         }

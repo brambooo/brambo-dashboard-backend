@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace BramboDashboard.Backend.API.Models
 {
-    public class AddWeight
+    public class RegisterMeasurement
     {
-      public decimal RegisterWeight { get; set; }
+      public decimal Weight { get; set; }
+      public int StrenghtLevel { get; set; }
       public DateTime RegisterDate { get; set; }
   }
 }

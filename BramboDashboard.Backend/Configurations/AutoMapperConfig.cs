@@ -11,7 +11,8 @@ namespace BramboDashboard.Backend.API.Configurations
         return new MapperConfiguration(cfg =>
         {
           cfg.CreateMap<Client, ClientEntity>().ReverseMap();
-          cfg.CreateMap<Weight, WeightEntity>().ReverseMap();
+          cfg.CreateMap<RegisterMeasurement, MeasurementEntity>().ReverseMap();
+          cfg.CreateMap<GetMeasurement, MeasurementEntity>().ReverseMap();
         });
       }
     }
